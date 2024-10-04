@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Ganjil/Genap</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Cek Ganjil/Genap</h1>
+        <form id="numberForm">
+            <label>Pilih opsi:</label><br>
+            <input type="radio" name="pilihan" value="1" required> Cek satu angka<br>
+            <input type="radio" name="pilihan" value="2"> Cek beberapa angka<br>
+            <input type="radio" name="pilihan" value="3"> Hitung total angka genap dan ganjil<br><br>
+
+            <div>
+                <label>Masukkan angka: </label>
+                <input type="text" id="angkaInput" placeholder="Masukkan satu angka" style="display:none;"><br>
+                <label>Masukkan beberapa angka (pisahkan dengan koma): </label>
+                <input type="text" id="angkaListInput" placeholder="Contoh: 1,2,3" required>
+            </div><br>
+
+            <button type="submit">Cek</button>
+        </form>
+
+        <h2>Hasil:</h2>
+        <pre id="result"></pre>
+    </div>
+
+    <script>
+        const form = document.getElementById('numberForm');
+        const angkaInput = document.getElementById('angkaInput');
+        const angkaListInput = document.getElementById('angkaListInput');
+        const result = document.getElementById('result');
+
+        form.addEventListener('change', (event) => {
+            if (event.target.value === '1') {
+                angkaInput.style.display = 'block';
+                angkaListInput.style.display = 'none';
+            } else {
+                angkaInput.style.display = 'none';
+                angkaListInput.style.display = 'block';
+            }
+        });
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const pilihan = form.pilihan.value;
+
+            if (pilihan === '1') {
+                const angka = parseInt(angkaInput.value);
+                result.textContent = `${angka} adalah angka ${cekGanjilGenap(angka)}.`;
+            } else if (pilihan === '2') {
+                const angkaList = angkaListInput.value.split(',').map(Number);
+                result.textContent = angkaList.map(angka => `${angka} adalah angka ${cekGanjilGenap(angka)}.`).join('\n');
+            } else if (pilihan === '3') {
+                const angkaList = angkaListInput.value.split(',').map(Number);
+                const genapCount = angkaList.filter(angka => cekGanjilGenap(angka) === 'genap').length;
+                const ganjilCount = angkaList.length - genapCount;
+                result.textContent = `Dari ${angkaList.length} angka yang dimasukkan, terdapat ${genapCount} angka genap dan ${ganjilCount} angka ganjil.`;
+            }
+        });
+
+        function asoy(angka) {
+            return angka % 2 === 0 ? 'genap' : 'ganjil';
+        }
+    </script>
+</body>
+</html>
+
+    
